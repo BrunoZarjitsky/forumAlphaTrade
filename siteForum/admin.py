@@ -4,3 +4,4 @@ from .models import *
 
 admin.site.register(enquete)
 admin.site.register(tipo)
+admin.site.register(resposta)

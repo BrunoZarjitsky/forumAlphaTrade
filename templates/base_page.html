@@ -24,7 +24,11 @@
 
 
 </head>
+{% if background %}
 <body style="background-image: url('/static/assets/media/backgrounds/{{background}}'); fixed; background-size: 100% auto; background-repeat: no-repeat; background-attachment: fixed;">
+{% else %}
+<body style="background-image: url('/static/assets/media/backgrounds/background1.jpg'); fixed; background-size: 100% auto; background-repeat: no-repeat; background-attachment: fixed;">
+{% endif %}
     <header>
         <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
             <a class="navbar-brand" href="{% url 'Index' %}">Forum do Bruno</a>
@@ -46,10 +50,18 @@
                         </div>
                       </li>
                     <li class = "nav-item"><a  class="nav-link" href = "#">Minhas respostas</a></li>
-                    <li class = "nav-item"><a  class="nav-link" href = "http://127.0.0.1:8000/admin/logout/"><span class="fas fa-sign-out-alt"></span>Sair</a></li>
+                    <li class = "nav-item"><a  class="nav-link" href = "{% url 'logout' %}"><span class="fas fa-sign-out-alt"></span>Sair</a></li>
                     {% else %}
-                    <li class = "nav-item"><a  class="nav-link" href="#"><span class="fas fa-user"></span> Se inscrever</a></li>
-                    <li class = "nav-item"><a  class="nav-link" href="http://127.0.0.1:8000/admin/login/?next=/admin/"><span class="fas fa-sign-in-alt"></span> Entrar</a></li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          Enquetes
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                          <a class="dropdown-item" href="{% url 'Enquetes' %}">Todas enquetes</a>
+                        </div>
+                      </li>
+                    <li class = "nav-item"><a  class="nav-link" href="{% url 'sign-up' %}"><span class="fas fa-user"></span> Se inscrever</a></li>
+                    <li class = "nav-item"><a  class="nav-link" href="{% url 'login' %}"><span class="fas fa-sign-in-alt"></span> Entrar</a></li>
                     {% endif %}
                 </ul>
             </div>

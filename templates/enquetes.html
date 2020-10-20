@@ -1,0 +1,48 @@
+{% extends "base_page.html"%}
+{% load static%}
+{% block content %}
+<div class = "row justify-content-center" style="padding-top: 5%;">
+    <div class = "col-md-2"></div>
+    <div class = "col-md-8">
+        <div class = "card">
+            <div class = "card-header">
+                <div class = "row">
+                    <h4>Todas as enquetes</h4>
+                    <div class = "ml-auto">
+                        <a href = "#" type="button" class="btn btn-primary">Criar nova enquete</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class = "row">
+                    <div class = "col-md-12">
+                    <table class="table table-hover display" style="width: 100%;" id = "enquetes">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Titulo</th>
+                                <th scope="col">N° respostas</th>
+                                <th scope="col">Visitar</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for autos in enquetesLista %}
+                            <tr>
+                                <th scope="row">{{autos.id}}</th>
+                                <td>{{autos.titulo}}</td>
+                                <td>{{autos.nmr}}</td>
+                                <td><a href = "{% url 'EnqueteDetalhe' id=autos.id %}"><i class="fas fa-directions"></i></a></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "col-md-2">
+
+    </div>
+</div>
+{% endblock %}

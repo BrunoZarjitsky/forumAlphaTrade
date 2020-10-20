@@ -1,0 +1,31 @@
+{% extends "base_page.html"%}
+{% load static%}
+{% block content %}
+<div class = "row justify-content-center" style="padding-top: 5%;">
+    <div class = "col-md-2"></div>
+    <div class = "col-md-8">
+        <div class = "card">
+            <div class = "card-header">
+                <div class = "row pl-2 pr-2">
+                    <h4>{{enqueteDet.titulo}}</h4>
+                    <div class = "ml-auto">
+                        <a href = "#" type="button" class="btn btn-primary">Criar nova enquete</a>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body">
+                <h5 class = "card-title">{{enqueteDet.descricao}}</h5>
+            </div>
+            <span class = "border-top"></span>
+            <!-- <div class="d-flex p-2 bd-highlight">I'm a flexbox container!</div> -->
+                <form class = "pl-2">
+                    <div class = "form-group">
+                        <label>Sabe como ajudar?</label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar resposta!</button>
+                </form>
+        </div>
+    </div>
+    <div class = "col-md-2"></div>
+</div>
+{% endblock %}

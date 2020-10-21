@@ -14,11 +14,23 @@ def Index(request):
     enquetes = enquete.objects.all()
     # print(enquetes[0].tipo.all())
     enquetesLista = []
+    emAlta = [{}, {}, {}]
+    emAltaPlacehold = [0, 0, 0]
     for i in enquetes:
         qtdRespostas = len(resposta.objects.filter(pergunta=i))
+        if qtdRespostas >= emAltaPlacehold[0]:
+            emAltaPlacehold[0] = qtdRespostas
+            emAlta[0] = {"enquete": i, "qtdRespostas": qtdRespostas}
+        elif qtdRespostas >= emAltaPlacehold[1]:
+            emAltaPlacehold[1] = qtdRespostas
+            emAlta[1] = {"enquete": i, "qtdRespostas": qtdRespostas}
+        elif qtdRespostas >= emAltaPlacehold[2]:
+            emAltaPlacehold[2] = qtdRespostas
+            emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
         enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
     ultimas = enquetesLista[0:20][::-1]
-    return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas})
+    return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas,
+                                            "emAlta": emAlta})
 
 def Enquetes(request):
     enquetes = enquete.objects.all()

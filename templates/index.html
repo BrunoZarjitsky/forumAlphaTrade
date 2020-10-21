@@ -12,7 +12,7 @@
                                             , visitante, que tal se inscrever no nosso site?
                                             {% endif %}</h4>
                 <div class = "row">
-                    <div class = "col-md-8">
+                    <div class = "col-md-7">
                         <div class = "card">
                             <div class = "card-header">
                                 <div class = "row pl-2 pr-2">
@@ -46,7 +46,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class = "col-md-4">
+                    <div class = "col-md-5">
                         {% if user.is_authenticated %}
                         <div class = "col-md-12">
                             <div class = "card">
@@ -72,24 +72,20 @@
                                 <div class = "card-body">
                                     <table class="table table-hover">
                                         <thead>
-                                        <tr>
-                                            <th scope="col">#</th>
-                                            <th scope="col">Titulo</th>
-                                        </tr>
+                                            <tr>
+                                                <th scope="col">Titulo</th>
+                                                <th scope="col">N° respostas</th>
+                                                <th scope="col">Visitar</th>
+                                            </tr>
                                         </thead>
                                         <tbody>
-                                        <tr>
-                                            <th scope="row">1</th>
-                                            <td>Mark</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">2</th>
-                                            <td>Jacob</td>
-                                        </tr>
-                                        <tr>
-                                            <th scope="row">3</th>
-                                            <td>Larry</td>
-                                        </tr>
+                                            {% for autos in emAlta %}
+                                                <tr>
+                                                    <th scope="row">{{autos.enquete.titulo}}</th>
+                                                    <td>{{autos.qtdRespostas}}</td>
+                                                    <td><a href = "{% url 'EnqueteDetalhe' id=autos.enquete.id %}"><i class="fas fa-directions"></i></a></td>
+                                                </tr>
+                                            {% endfor %}
                                         </tbody>
                                     </table>
                                 </div>

@@ -33,7 +33,7 @@ class enquete(models.Model):
 
 class resposta(models.Model):
     pergunta = models.ForeignKey(enquete, on_delete=models.CASCADE)
-    resp = models.TextField()
+    resp = models.TextField(verbose_name="Resposta")
     dono = models.ForeignKey(User, on_delete=models.CASCADE, default="", blank=True, null=True)
 
     def __str__(self):

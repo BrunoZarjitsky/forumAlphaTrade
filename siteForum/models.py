@@ -42,3 +42,10 @@ class resposta(models.Model):
     class Meta:
         verbose_name = "Resposta"
         verbose_name_plural = "Respostas"
+
+class avaliacaoResp(models.Model):
+    aval = models.IntegerField()
+    resp = models.ForeignKey(resposta, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return str(self.aval)+ " " +self.resp

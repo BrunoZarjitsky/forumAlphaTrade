@@ -18,7 +18,6 @@ def Index(request):
     emAltaPlacehold = [0, 0, 0]
     for i in enquetes:
         qtdRespostas = len(resposta.objects.filter(pergunta=i))
-        print(qtdRespostas)
         if qtdRespostas >= emAltaPlacehold[0]:
             emAltaPlacehold[0] = qtdRespostas
             emAlta[2] = emAlta[1]
@@ -43,20 +42,31 @@ def Enquetes(request):
 def EnqueteDetalhe(request, id):
     enqueteDet = enquete.objects.get(id = id)
     pergunta = enquete.objects.get(id=id)
-    respostas = resposta.objects.filter(pergunta=pergunta)
-    print(request.POST)
+    respostas = resposta.objects.filter(pergunta=pergunta).order_by("-id")
+    principal = {"resposta": respostas[0], "likes": 0}
+    principalPlacehold = 0
+    respostasLikes = []
+    for i in respostas:
+        qtd = len(avaliacaoResp.objects.filter(resp=i))
+        if qtd > principalPlacehold:
+            principal = {"resposta": i, "likes": qtd}
+        respostasLikes.append({"resp": i.resp, "dono": i.dono, "id": i.id, "likes": qtd})
     if request.method == "POST":
         if "aval" in request.POST:
-            print("\n\n\n\n\n\n")
-        form = RespostaForm(pergunta=pergunta, dono=request.user, author=request.user, data=request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('Index')
+            form2 = avalPos(resp=resposta.objects.get(id=request.POST["aval"]), data=request.POST)
+            if form2.is_valid():
+                form2.save()
+        else:
+            form = RespostaForm(pergunta=pergunta, dono=request.user, author=request.user, data=request.POST)
+            if form.is_valid():
+                form.save()
+        return redirect('Index')
     else:
         form = RespostaForm()
+        # form2 = avalPos()
     return render(request, "enqueteDetalhe.html", {"background": "background"+str(randint(1,3))+".jpg",
-                                                    "enqueteDet": enqueteDet, "form": form, "respostas": respostas,
-                                                    })
+                                                    "enqueteDet": enqueteDet, "form": form, "respostas": respostasLikes,
+                                                    "avalPos": avalPos, "principal": principal})
 
 def sign_up(request):
     context = {}

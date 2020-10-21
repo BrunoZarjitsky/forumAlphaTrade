@@ -48,4 +48,4 @@ class avaliacaoResp(models.Model):
     resp = models.ForeignKey(resposta, on_delete=models.CASCADE)
 
     def __str__(self):
-        return str(self.aval)+ " " +self.resp
+        return str(self.aval)+ " " +str(self.resp.resp)

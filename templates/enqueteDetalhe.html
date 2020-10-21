@@ -21,23 +21,47 @@
             <div class = "form-group">
                 <label>Sabe como ajudar?</label>
             </div>
-            <form action="#" method="POST" class = "pb-1">
+            <form action="" method="POST" class = "pb-1">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button type="submit" class="save btn btn-primary">Enviar informações</button>
             </form>
+            <div class = "row">
+                <div class = "col-md-12">
+                    <div class = "card">
+                        <div class = "card-header">
+                            <h3 class = "card-title">Principal resposta</h3>
+                            Resposta Enviada por: <span class = "font-weight-bold">{{principal.resposta.dono}}</span>
+                        </div>
+                        <div class = "card-body">
+                            <div class = "row">
+                                {{principal.resposta.resp}}
+                                <div class = "ml-auto pr-1">
+                                    <form action="" method="POST" class = "pb-1">
+                                        {% csrf_token %}
+                                        <button type="submit" name = "aval" value = "{{autos.id}}" class = "save btn btn-success"><i class="fas fa-thumbs-up text-light"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {% for autos in respostas %}
             <div class = "row">
                 <div class = "col-md-12">
                     <div class = "card">
                         <div class = "card-header">
-                            Resposta Enviada por: {{autos.dono}}
+                            Resposta Enviada por: <span class = "font-weight-bold">{{autos.dono}}</span>
                         </div>
                         <div class = "card-body">
                             <div class = "row">
                                 {{autos.resp}}
                                 <div class = "ml-auto pr-1">
-                                    <i class="fas fa-thumbs-up text-success"></i>
+                                    <form action="" method="POST" class = "pb-1">
+                                        {% csrf_token %}
+                                        <button type="submit" name = "aval" value = "{{autos.id}}" class = "save btn btn-success"><i class="fas fa-thumbs-up text-light"></i></button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

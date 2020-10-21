@@ -46,6 +46,7 @@ def Enquetes(request):
 def EnqueteDetalhe(request, id):
     enqueteDet = enquete.objects.get(id = id)
     pergunta = enquete.objects.get(id=id)
+    respostas = resposta.objects.filter(pergunta=pergunta)
     if request.method == "POST":
         form = RespostaForm(pergunta=pergunta, dono=request.user, author=request.user, data=request.POST)
         if form.is_valid():
@@ -54,7 +55,8 @@ def EnqueteDetalhe(request, id):
     else:
         form = RespostaForm()
     return render(request, "enqueteDetalhe.html", {"background": "background"+str(randint(1,3))+".jpg",
-                                                    "enqueteDet": enqueteDet, "form": form,})
+                                                    "enqueteDet": enqueteDet, "form": form, "respostas": respostas,
+                                                    })
 
 def sign_up(request):
     context = {}

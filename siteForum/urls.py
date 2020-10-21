@@ -7,6 +7,8 @@ urlpatterns = [
     path("", views.Index, name = "Index"),
     path("enquetes/", views.Enquetes, name = "Enquetes"),
     path("enquetes/<id>", views.EnqueteDetalhe, name = "EnqueteDetalhe"),
-    path('accounts/sign_up/',views.sign_up,name="sign-up")
-
+    path('accounts/sign_up/',views.sign_up, name="sign-up"),
+    path('minhasEnquetes/', views.minhasEnquetes, name = "MinhasEnquetes"),
+    path('minhasRespostas/', views.minhasRespostas, name = "MinhasRespostas"),
+    path('novaEnquete/', views.novaEnquete, name = "novaEnquete"),
 ]

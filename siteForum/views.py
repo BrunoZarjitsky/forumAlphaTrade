@@ -6,25 +6,43 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect
-
+from .forms import *
 
 # Create your views here.
 
 def Index(request):
     enquetes = enquete.objects.all()
-    print(enquetes[0].tipo.all())
-    ultimas = enquetes.order_by("-id")[0:20]
+    # print(enquetes[0].tipo.all())
+    enquetesLista = []
+    for i in enquetes:
+        qtdRespostas = len(resposta.objects.filter(pergunta=i))
+        enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
+    ultimas = enquetesLista[0:20][::-1]
     return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas})
 
 def Enquetes(request):
-    enquetesLista = enquete.objects.all()
+    enquetes = enquete.objects.all()
+    titulo = "Todas as enquetes"
+    enquetesLista = []
+    for i in enquetes:
+        qtdRespostas = len(resposta.objects.filter(pergunta=i))
+        enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
     return render(request, "enquetes.html", {"background": "background"+str(randint(1,3))+".jpg", 
-                                            "enquetesLista": enquetesLista})
+                                            "enquetesLista": enquetesLista, "titulo": titulo,})
+
 
 def EnqueteDetalhe(request, id):
     enqueteDet = enquete.objects.get(id = id)
+    pergunta = enquete.objects.get(id=id)
+    if request.method == "POST":
+        form = RespostaForm(pergunta=pergunta, dono=request.user, author=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Index')
+    else:
+        form = RespostaForm()
     return render(request, "enqueteDetalhe.html", {"background": "background"+str(randint(1,3))+".jpg",
-                                                    "enqueteDet": enqueteDet,})
+                                                    "enqueteDet": enqueteDet, "form": form,})
 
 def sign_up(request):
     context = {}
@@ -36,3 +54,28 @@ def sign_up(request):
             return redirect("Index")
     context['form']=form
     return render(request,'registration/sign_up.html',context)
+
+def minhasEnquetes(request):
+    enquetes = enquete.objects.filter(dono=request.user)
+    titulo = "Minhas enquetes"
+    enquetesLista = []
+    for i in enquetes:
+        qtdRespostas = len(resposta.objects.filter(pergunta=i))
+        enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
+    return render(request, "enquetes.html", {"background": "background"+str(randint(1,3))+".jpg", "enquetesLista": enquetesLista,
+                                            "titulo": titulo, })
+
+def minhasRespostas(request):
+    res = resposta.objects.filter(dono=request.user)
+    return render(request, "respostas.html", {"background": "background"+str(randint(1,3))+".jpg", "respostasLista": res})
+
+def novaEnquete(request):
+    if request.method == "POST":
+        form = NovaEnquete(dono=request.user, data=request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('Index')
+    else:
+        form = NovaEnquete()
+    return render(request, "novaEnquete.html", {"background": "background"+str(randint(1,3))+".jpg",
+                                                "form": form,})

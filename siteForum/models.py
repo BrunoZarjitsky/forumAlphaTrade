@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 # Create your models here.
 
@@ -21,6 +22,7 @@ class enquete(models.Model):
     titulo = models.CharField(max_length=200)
     descricao = models.TextField(default="")
     tipo = models.ManyToManyField(tipo, blank=True)
+    dono = models.ForeignKey(User, on_delete=models.CASCADE, default="", blank=True, null=True)
 
     class Meta:
         verbose_name = "Enquete"
@@ -32,6 +34,7 @@ class enquete(models.Model):
 class resposta(models.Model):
     pergunta = models.ForeignKey(enquete, on_delete=models.CASCADE)
     resp = models.TextField()
+    dono = models.ForeignKey(User, on_delete=models.CASCADE, default="", blank=True, null=True)
 
     def __str__(self):
         return self.resp

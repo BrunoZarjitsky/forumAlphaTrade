@@ -7,12 +7,10 @@
         <div class = "card">
             <div class = "card-header">
                 <div class = "row">
-                    <h4>{{titulo}}</h4>
-                    {% if user.is_authenticated%}
+                    <h4>Minhas Respostas</h4>
                     <div class = "ml-auto">
-                        <a href = "{% url 'novaEnquete' %}" type="button" class="btn btn-primary">Criar nova enquete</a>
+                        <a href = "#" type="button" class="btn btn-primary">Criar nova enquete</a>
                     </div>
-                    {% endif %}
                 </div>
             </div>
             <div class="card-body">
@@ -21,19 +19,17 @@
                     <table class="table table-hover display" style="width: 100%;" id = "enquetes">
                         <thead>
                             <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">Titulo</th>
-                                <th scope="col">N° respostas</th>
-                                <th scope="col">Visitar</th>
+                                <th scope="col">Pergunta</th>
+                                <th scope="col">Sua resposta</th>
+                                <th scope="col">Visitar pergunta</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {% for autos in enquetesLista %}
+                            {% for autos in respostasLista %}
                             <tr>
-                                <th scope="row">{{autos.enquete.id}}</th>
-                                <td>{{autos.enquete.titulo}}</td>
-                                <td>{{autos.qtdRespostas}}</td>
-                                <td><a href = "{% url 'EnqueteDetalhe' id=autos.enquete.id %}"><i class="fas fa-directions"></i></a></td>
+                                <th scope="row">{{autos.pergunta.titulo}}</th>
+                                <td>{{autos.resp}}</td>
+                                <td><a href = "{% url 'EnqueteDetalhe' id=autos.pergunta.id %}"><i class="fas fa-directions"></i></a></td>
                             </tr>
                             {% endfor %}
                         </tbody>

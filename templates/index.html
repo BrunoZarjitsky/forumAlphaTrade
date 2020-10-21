@@ -35,10 +35,10 @@
                                     <tbody>
                                         {% for autos in ultimas %}
                                         <tr>
-                                            <th scope="row">{{autos.id}}</th>
-                                            <td>{{autos.titulo}}</td>
-                                            <td>{{autos.nmr}}</td>
-                                            <td><a href = "{% url 'EnqueteDetalhe' id=autos.id %}"><i class="fas fa-directions"></i></a></td>
+                                            <th scope="row">{{autos.enquete.id}}</th>
+                                            <td>{{autos.enquete.titulo}}</td>
+                                            <td>{{autos.qtdRespostas}}</td>
+                                            <td><a href = "{% url 'EnqueteDetalhe' id=autos.enquete.id %}"><i class="fas fa-directions"></i></a></td>
                                         </tr>
                                         {% endfor %}
                                     </tbody>

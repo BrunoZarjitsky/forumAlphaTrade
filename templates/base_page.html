@@ -45,11 +45,11 @@
                           Enquetes
                         </a>
                         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                          <a class="dropdown-item" href="#">Minhas enquetes</a>
+                          <a class="dropdown-item" href="{% url 'MinhasEnquetes' %}">Minhas enquetes</a>
                           <a class="dropdown-item" href="{% url 'Enquetes' %}">Todas enquetes</a>
                         </div>
                       </li>
-                    <li class = "nav-item"><a  class="nav-link" href = "#">Minhas respostas</a></li>
+                    <li class = "nav-item"><a  class="nav-link" href = "{% url 'MinhasRespostas' %}">Minhas respostas</a></li>
                     <li class = "nav-item"><a  class="nav-link" href = "{% url 'logout' %}"><span class="fas fa-sign-out-alt"></span>Sair</a></li>
                     {% else %}
                     <li class="nav-item dropdown">

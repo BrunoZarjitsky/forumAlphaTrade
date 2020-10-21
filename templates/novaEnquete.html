@@ -1,32 +1,28 @@
 {% extends "base_page.html"%}
 {% load static%}
+{% load crispy_forms_tags %}
+
 {% block content %}
 <div class = "row justify-content-center" style="padding-top: 5%;">
     <div class = "col-md-2"></div>
     <div class = "col-md-8">
         <div class = "card">
             <div class = "card-header">
-                <div class = "row pl-2 pr-2">
-                    <h4>{{enqueteDet.titulo}}</h4>
-                    <div class = "ml-auto">
-                        <a href = "#" type="button" class="btn btn-primary">Criar nova enquete</a>
-                    </div>
+                <div class = "row">
+                    <h4>Nova enquete</h4>
                 </div>
             </div>
             <div class="card-body">
-                <h5 class = "card-title">{{enqueteDet.descricao}}</h5>
-            </div>
-            <span class = "border-top"></span>
-                <div class = "form-group">
-                    <label>Sabe como ajudar?</label>
-                </div>
                 <form action="#" method="POST">
                     {% csrf_token %}
-                    {{ form }}
+                    {{form|crispy}}
                     <button type="submit" class="save btn btn-primary">Enviar informações</button>
                 </form>
+            </div>
         </div>
     </div>
-    <div class = "col-md-2"></div>
+    <div class = "col-md-2">
+
+    </div>
 </div>
 {% endblock %}

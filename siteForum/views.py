@@ -14,19 +14,16 @@ def Index(request):
     enquetes = enquete.objects.all()
     # print(enquetes[0].tipo.all())
     enquetesLista = []
-    emAlta = [{}, {}, {}]
+    emAlta = [{"enquete": enquetes[0], "qtdRespostas": 0}, {"enquete": enquetes[1], "qtdRespostas": 0}, {"enquete": enquetes[2], "qtdRespostas": 0}]
     emAltaPlacehold = [0, 0, 0]
     for i in enquetes:
         qtdRespostas = len(resposta.objects.filter(pergunta=i))
+        print(qtdRespostas)
         if qtdRespostas >= emAltaPlacehold[0]:
             emAltaPlacehold[0] = qtdRespostas
+            emAlta[2] = emAlta[1]
+            emAlta[1] = emAlta[0]
             emAlta[0] = {"enquete": i, "qtdRespostas": qtdRespostas}
-        elif qtdRespostas >= emAltaPlacehold[1]:
-            emAltaPlacehold[1] = qtdRespostas
-            emAlta[1] = {"enquete": i, "qtdRespostas": qtdRespostas}
-        elif qtdRespostas >= emAltaPlacehold[2]:
-            emAltaPlacehold[2] = qtdRespostas
-            emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
         enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
     ultimas = enquetesLista[0:20][::-1]
     return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas,
@@ -47,7 +44,10 @@ def EnqueteDetalhe(request, id):
     enqueteDet = enquete.objects.get(id = id)
     pergunta = enquete.objects.get(id=id)
     respostas = resposta.objects.filter(pergunta=pergunta)
+    print(request.POST)
     if request.method == "POST":
+        if "aval" in request.POST:
+            print("\n\n\n\n\n\n")
         form = RespostaForm(pergunta=pergunta, dono=request.user, author=request.user, data=request.POST)
         if form.is_valid():
             form.save()

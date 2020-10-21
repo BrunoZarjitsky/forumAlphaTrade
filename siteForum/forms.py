@@ -39,3 +39,23 @@ class NovaEnquete(forms.ModelForm):
     class Meta:
         model = enquete
         fields = ("titulo", "descricao", "tipo")
+
+
+class avalPos(forms.ModelForm):
+
+    def __init__(self, **kwargs):
+        self.aval = 1
+        self.resp = kwargs.pop("resp", None)
+        super(avalPos, self).__init__(**kwargs)
+
+    def save(self, commit=True):
+        obj = super(avalPos, self).save(commit=False)
+        obj.resp = self.resp
+        obj.aval = 1
+        if commit:
+            obj.save()
+        return obj
+
+    class Meta:
+        model = avaliacaoResp
+        exclude = ("aval", "resp")

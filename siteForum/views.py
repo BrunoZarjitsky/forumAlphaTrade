@@ -146,11 +146,18 @@ def preencherPerfil(request):
     else:
         form = perfilForm()
     meuPer = perfil.objects.filter(usuario = request.user).last()
-    meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
-                "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
-                "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
-                "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
-                "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    if meuPer != None:
+        meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+                    "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
+                    "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
+                    "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                    "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    else:
+            meuPerfil = {"usuario": request.user, "nomeCompleto": "", "email": "", "foto": "", 
+                    "nascimento": "", "mostrarNome": False, "mostrarEmail": False, 
+                    "mostrarFoto": False, "mostrarNascimento": False, 
+                    "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                    "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
     return render(request, "preencherPerfil.html", {"background": "background"+str(randint(1,3))+".jpg",
                                                     "form": form, "meuPerfil": meuPerfil})
 

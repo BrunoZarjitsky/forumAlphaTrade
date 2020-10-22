@@ -34,7 +34,6 @@ def Index(request):
             emAltaPlacehold[2] = qtdRespostas
             emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
         enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
-        print(emAltaPlacehold)
     ultimas = enquetesLista[0:20][::-1]
     return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas,
                                             "emAlta": emAlta})

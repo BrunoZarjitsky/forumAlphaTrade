@@ -50,3 +50,13 @@ class avaliacaoResp(models.Model):
 
     def __str__(self):
         return str(self.aval)+ " " +str(self.resp.resp)
+
+class perfil(models.Model):
+    nomeCompleto = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    foto = models.ImageField(blank=True, null=True)
+    nascimento = models.DateField(blank=True, null=True)
+    mostrarNome = models.BooleanField()
+    mostrarEmail = models.BooleanField()
+    mostrarFoto = models.BooleanField()
+    mostrarNascimento = models.BooleanField()

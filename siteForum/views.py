@@ -22,8 +22,19 @@ def Index(request):
             emAltaPlacehold[0] = qtdRespostas
             emAlta[2] = emAlta[1]
             emAlta[1] = emAlta[0]
+            emAltaPlacehold[1] = emAlta[1]["qtdRespostas"]
+            emAltaPlacehold[2] = emAlta[2]["qtdRespostas"]
             emAlta[0] = {"enquete": i, "qtdRespostas": qtdRespostas}
+        elif qtdRespostas >= emAltaPlacehold[1]:
+            emAltaPlacehold[1] = qtdRespostas
+            emAlta[2] = emAlta[1]
+            emAltaPlacehold[2] = emAlta[2]["qtdRespostas"]
+            emAlta[1] = {"enquete": i, "qtdRespostas": qtdRespostas}
+        elif qtdRespostas >= emAltaPlacehold[2]:
+            emAltaPlacehold[2] = qtdRespostas
+            emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
         enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
+        print(emAltaPlacehold)
     ultimas = enquetesLista[0:20][::-1]
     return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas,
                                             "emAlta": emAlta})

@@ -46,6 +46,7 @@ class resposta(models.Model):
 class avaliacaoResp(models.Model):
     aval = models.IntegerField()
     resp = models.ForeignKey(resposta, on_delete=models.CASCADE)
+    dono = models.ForeignKey(User, on_delete=models.CASCADE, default="", blank=True, null=True)
 
     def __str__(self):
         return str(self.aval)+ " " +str(self.resp.resp)

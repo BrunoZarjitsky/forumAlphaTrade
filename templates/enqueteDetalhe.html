@@ -9,9 +9,6 @@
             <div class = "card-header">
                 <div class = "row pl-2 pr-2">
                     <h4>{{enqueteDet.titulo}}</h4>
-                    <div class = "ml-auto">
-                        <a href = "#" type="button" class="btn btn-primary">Criar nova enquete</a>
-                    </div>
                 </div>
             </div>
             <div class="card-body">
@@ -31,15 +28,16 @@
                     <div class = "card">
                         <div class = "card-header">
                             <h3 class = "card-title">Principal resposta</h3>
-                            Resposta Enviada por: <span class = "font-weight-bold">{{principal.resposta.dono}}</span>
+                            Resposta Enviada por: <span class = "font-weight-bold">{{principal.dono}}</span>
                         </div>
                         <div class = "card-body">
                             <div class = "row">
-                                {{principal.resposta.resp}}
+                                {{principal.resp}}
                                 <div class = "ml-auto pr-1">
                                     <form action="" method="POST" class = "pb-1">
                                         {% csrf_token %}
-                                        <button type="submit" name = "aval" value = "{{autos.id}}" class = "save btn btn-success"><i class="fas fa-thumbs-up text-light"></i></button>
+                                        <span>{{principal.likes}}</span>
+                                        <button type="submit" name = "aval" value = "{{principal.id}}" class = "save btn btn-success"><i class="fas fa-thumbs-up text-light"></i></button>
                                     </form>
                                 </div>
                             </div>
@@ -47,6 +45,7 @@
                     </div>
                 </div>
             </div>
+            <h4>Outras respostas</h4>
             {% for autos in respostas %}
             <div class = "row">
                 <div class = "col-md-12">
@@ -60,6 +59,7 @@
                                 <div class = "ml-auto pr-1">
                                     <form action="" method="POST" class = "pb-1">
                                         {% csrf_token %}
+                                        <span>{{autos.likes}}</span>
                                         <button type="submit" name = "aval" value = "{{autos.id}}" class = "save btn btn-success"><i class="fas fa-thumbs-up text-light"></i></button>
                                     </form>
                                 </div>

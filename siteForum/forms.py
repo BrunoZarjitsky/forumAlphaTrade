@@ -46,11 +46,13 @@ class avalPos(forms.ModelForm):
     def __init__(self, **kwargs):
         self.aval = 1
         self.resp = kwargs.pop("resp", None)
+        self.dono = kwargs.pop("dono", None)
         super(avalPos, self).__init__(**kwargs)
 
     def save(self, commit=True):
         obj = super(avalPos, self).save(commit=False)
         obj.resp = self.resp
+        obj.dono = self.dono
         obj.aval = 1
         if commit:
             obj.save()

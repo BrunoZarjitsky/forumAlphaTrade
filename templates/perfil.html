@@ -1,0 +1,144 @@
+{% extends 'base_page.html' %}
+{% load static %}
+{% block content %}
+<div class = "row justify-content-center" style="padding-top: 5%; padding-bottom: 5%;">
+    <div class = "col-md-1"></div>
+    <div class = "col-md-10">
+        <div class = "card">
+            <div class = "card-header">
+                <h4 class = "card-title">Perfil</h4>
+            </div>
+            <div class="card-body">
+                <div class = "row">
+                    <div class = "col-md-7">
+                        <div class = "card">
+                            <div class = "card-header">
+                                <div class = "row pl-2 pr-2">
+                                    <h5>Minhas enquetes</h5>
+                                    <div class = "ml-auto">
+                                        <a href = "{% url 'Enquetes' %}" type="button" class="btn btn-primary">Ver todas enquetes</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class = "card-body">
+                                <table class="table table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Titulo</th>
+                                            <th scope="col">Usuario</th>
+                                            <th scope="col">N° respostas</th>
+                                            <th scope="col">Visitar</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {% for autos in enquetes %}
+                                        <tr>
+                                            <th scope="row">{{autos.enquete.titulo}}</th>
+                                            <td>{{autos.enquete.dono}}</td>
+                                            <td>{{autos.qtdRespostas}}</td>
+                                            <td><a href = "{% url 'EnqueteDetalhe' id=autos.enquete.id %}"><i class="fas fa-directions"></i></a></td>
+                                        </tr>
+                                        {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                    <div class = "col-md-5">
+                        {% if user.is_authenticated %}
+                            {% if meuPerfil.nomeCompleto or meuPerfil.email or meuPerfil.nascimento or meuPerfil.foto %}
+                                <div class = "col-md-12">
+                                    <div class = "card">
+                                        <div class = "card-header">
+                                            <div class = "row pl-2 pr-2">
+                                                <h5>Perfil</h5>
+                                                <div class = "ml-auto">
+                                                    <a href = "{% url 'preencherPerfil' %}" type="button" class="btn btn-primary">Ver minhas informações</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class = "card-body">
+                                            <dl class = "row">
+                                                {% if meuPerfil.nomeCompleto %}
+                                                    <dt class = "col-sm-5">Nome: </dt>
+                                                    <dd class = "col-sm-7">{{meuPerfil.nomeCompleto}}</dd>
+                                                {% endif %}
+                                                {% if meuPerfil.email %}
+                                                    <dt class = "col-sm-5">Email: </dt>
+                                                    <dd class = "col-sm-7">{{meuPerfil.email}}</dd>
+                                                {% endif %}
+                                                {% if meuPerfil.nascimento %}
+                                                    <dt class = "col-sm-5">Nascimento: </dt>
+                                                    <dd class = "col-sm-7">{{meuPerfil.nascimento}}</dd>
+                                                {% endif %}
+                                                {% if meuPerfil.foto %}
+                                                    <dt class = "col-sm-5">Foto: </dt>
+                                                    <dd class = "col-sm-7"><img src="{{meuPerfil.foto.url}}" alt="" style="max-width: 70%; max-height: 70%;"></dd>
+                                                {% endif %}
+                                            </dl>
+                                            <div class = "row">
+                                                <div class = "col-md-6">
+                                                    <dt class = "col-sm-11">N° enquetes </dt>
+                                                    <dd class = "col-sm-1">{{meuPerfil.qtdEnquetes}}</dd>
+                                                </div>
+                                                <div class = "col-md-6">
+                                                    <dt class = "col-sm-11">N° respostas</dt>
+                                                    <dd class = "col-sm-1">{{meuPerfil.qtdRespostas}}</dd>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% else %}
+                                <div class = "col-md-12">
+                                    <div class = "card">
+                                        <div class = "card-header">
+                                            <div class = "row pl-2 pr-2">
+                                                <h5>Perfil</h5>
+                                                <div class = "ml-auto">
+                                                    <a href = "{% url 'preencherPerfil' %}" type="button" class="btn btn-primary">Preencher meu perfil</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class = "card-body">
+                                            <h4 class = "bold">Seu perfil ainda não foi preenchido</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endif %}
+                        <div class = "col-md-12">
+                            <div class = "card">
+                                <div class = "card-header">
+                                    <h5>Em alta</h5>
+                                </div>
+                                <div class = "card-body">
+                                    <table class="table table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Titulo</th>
+                                                <th scope="col">N° respostas</th>
+                                                <th scope="col">Visitar</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for autos in emAlta %}
+                                                <tr>
+                                                    <th scope="row">{{autos.enquete.titulo}}</th>
+                                                    <td>{{autos.qtdRespostas}}</td>
+                                                    <td><a href = "{% url 'EnqueteDetalhe' id=autos.enquete.id %}"><i class="fas fa-directions"></i></a></td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "col-md-1"></div>
+</div>
+{% endblock %}

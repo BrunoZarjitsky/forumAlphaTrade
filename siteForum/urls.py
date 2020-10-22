@@ -11,4 +11,5 @@ urlpatterns = [
     path('minhasEnquetes/', views.minhasEnquetes, name = "MinhasEnquetes"),
     path('minhasRespostas/', views.minhasRespostas, name = "MinhasRespostas"),
     path('novaEnquete/', views.novaEnquete, name = "novaEnquete"),
+    path('preencherPerfil/', views.preencherPerfil, name = "preencherPerfil"),
 ]

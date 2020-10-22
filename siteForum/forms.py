@@ -61,3 +61,20 @@ class avalPos(forms.ModelForm):
     class Meta:
         model = avaliacaoResp
         exclude = ("aval", "resp")
+    
+class perfilForm(forms.ModelForm):
+
+    def __init__(self, **kwargs):
+        self.usuario = kwargs.pop("usuario", None)
+        super(perfilForm, self).__init__(**kwargs)
+
+    def save(self, commit=True):
+        obj = super(perfilForm, self).save(commit=False)
+        obj.usuario = self.usuario
+        if commit:
+            obj.save()
+        return obj
+
+    class Meta:
+        model = perfil
+        exclude = ("usuario",)

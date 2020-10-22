@@ -35,8 +35,14 @@ def Index(request):
             emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
         enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
     ultimas = enquetesLista[0:20][::-1]
+    meuPer = perfil.objects.filter(usuario = request.user).last()
+    meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+                "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
+                "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
+                "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
     return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas,
-                                            "emAlta": emAlta})
+                                            "emAlta": emAlta, "meuPerfil": meuPerfil})
 
 def Enquetes(request):
     enquetes = enquete.objects.all()
@@ -124,3 +130,21 @@ def novaEnquete(request):
         form = NovaEnquete()
     return render(request, "novaEnquete.html", {"background": "background"+str(randint(1,3))+".jpg",
                                                 "form": form,})
+
+
+def preencherPerfil(request):
+    if request.method == "POST":
+        form = perfilForm(usuario = request.user, data = request.POST, files=request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("Index")
+    else:
+        form = perfilForm()
+    meuPer = perfil.objects.filter(usuario = request.user).last()
+    meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+                "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
+                "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
+                "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    return render(request, "preencherPerfil.html", {"background": "background"+str(randint(1,3))+".jpg",
+                                                    "form": form, "meuPerfil": meuPerfil})

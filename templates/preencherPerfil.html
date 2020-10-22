@@ -1,0 +1,45 @@
+{% extends "base_page.html"%}
+{% load static%}
+{% load crispy_forms_tags %}
+{% block content %}
+<div class = "row justify-content-center" style="padding-top: 5%;">
+    <div class = "col-md-2"></div>
+    <div class = "col-md-8">
+        <div class = "card">
+            <div class = "card-header">
+                <div class = "row">
+                    <h4>Perfil</h4>
+                </div>
+            </div>
+            <div class="card-body">
+                <div class = "row">
+                    <div class = "col-md-6">
+                        <dl class = "row">
+                            <dt class = "col-sm-5">Nome: </dt>
+                            <dd class = "col-sm-7">{{meuPerfil.nomeCompleto}}</dd>
+                            <dt class = "col-sm-5">Email: </dt>
+                            <dd class = "col-sm-7">{{meuPerfil.email}}</dd>
+                            <dt class = "col-sm-5">Nascimento: </dt>
+                            <dd class = "col-sm-7">{{meuPerfil.nascimento}}</dd>
+                            <dt class = "col-sm-5">Foto: </dt>
+                            {% if meuPerfil.foto %}
+                            <dd class = "col-sm-7"><img src="{{meuPerfil.foto.url}}" alt="" style="max-width: 70%; max-height: 70%;"></dd>
+                            {% endif %}
+                        </dl>
+                    </div>
+                    <div class = "col-md-6">
+                        <form action="" method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            {{form|crispy}}
+                            <button type="submit" class="save btn btn-primary">Enviar informações</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class = "col-md-2">
+
+    </div>
+</div>
+{% endblock %}

@@ -52,6 +52,7 @@ class avaliacaoResp(models.Model):
         return str(self.aval)+ " " +str(self.resp.resp)
 
 class perfil(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE, default="", blank=True, null=True)
     nomeCompleto = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(blank=True, null=True)
     foto = models.ImageField(blank=True, null=True)

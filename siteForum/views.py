@@ -108,6 +108,7 @@ def sign_up(request):
     context['form']=form
     return render(request,'registration/sign_up.html',context)
 
+@login_required
 def minhasEnquetes(request):
     enquetes = enquete.objects.filter(dono=request.user)
     titulo = "Minhas enquetes"
@@ -118,10 +119,12 @@ def minhasEnquetes(request):
     return render(request, "enquetes.html", {"background": "background"+str(randint(1,3))+".jpg", "enquetesLista": enquetesLista,
                                             "titulo": titulo, })
 
+@login_required
 def minhasRespostas(request):
     res = resposta.objects.filter(dono=request.user)
     return render(request, "respostas.html", {"background": "background"+str(randint(1,3))+".jpg", "respostasLista": res})
 
+@login_required
 def novaEnquete(request):
     if request.method == "POST":
         form = NovaEnquete(dono=request.user, data=request.POST)
@@ -133,7 +136,7 @@ def novaEnquete(request):
     return render(request, "novaEnquete.html", {"background": "background"+str(randint(1,3))+".jpg",
                                                 "form": form,})
 
-
+@login_required
 def preencherPerfil(request):
     if request.method == "POST":
         form = perfilForm(usuario = request.user, data = request.POST, files=request.FILES)
@@ -151,7 +154,7 @@ def preencherPerfil(request):
     return render(request, "preencherPerfil.html", {"background": "background"+str(randint(1,3))+".jpg",
                                                     "form": form, "meuPerfil": meuPerfil})
 
-
+@login_required
 def perfilView(request):
     meuPer = perfil.objects.filter(usuario = request.user).last()
     meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
@@ -169,7 +172,8 @@ def perfilView(request):
     return render(request, "perfil.html", {"background": "background"+str(randint(1,3))+".jpg",
                                            "meuPerfil": meuPerfil, "enquetes": enquetesLista, 
                                            "respostas": respostas })
-                                        
+
+
 def perfilVisita(request, id):
     if User.objects.get(id = id) == request.user:
         return redirect("perfil")
@@ -178,8 +182,8 @@ def perfilVisita(request, id):
         meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
                     "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
                     "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
-                    "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
-                    "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+                    "qtdEnquetes": len(enquete.objects.filter(dono = User.objects.get(id = id))), 
+                    "qtdRespostas": len(resposta.objects.filter(dono = User.objects.get(id = id))),}
     else:
         meuPerfil = {"usuario": User.objects.get(id = id), "nomeCompleto": "", "email": "", "foto": "", 
                     "nascimento": "", "mostrarNome": False, "mostrarEmail": False, 

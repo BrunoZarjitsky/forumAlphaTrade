@@ -23,11 +23,15 @@
             <div class = "form-group">
                 <label>Sabe como ajudar?</label>
             </div>
+            {% if user.is_authenticated %}
             <form action="" method="POST" class = "pb-1">
                 {% csrf_token %}
                 {{ form|crispy }}
                 <button type="submit" class="save btn btn-primary">Enviar informações</button>
             </form>
+            {% else %}
+            <h6>Você precisa estar logado para responder enquetes</h6>
+            {% endif %}
             <div class = "row">
                 <div class = "col-md-12">
                     <div class = "card">

@@ -12,4 +12,6 @@ urlpatterns = [
     path('minhasRespostas/', views.minhasRespostas, name = "MinhasRespostas"),
     path('novaEnquete/', views.novaEnquete, name = "novaEnquete"),
     path('preencherPerfil/', views.preencherPerfil, name = "preencherPerfil"),
+    path('perfil/', views.perfilView, name = "perfil"),
+    path('perfil/<id>', views.perfilVisita, name = "perfilVisita"),
 ]

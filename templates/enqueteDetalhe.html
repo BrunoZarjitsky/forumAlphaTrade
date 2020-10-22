@@ -2,17 +2,22 @@
 {% load static%}
 {% block content %}
 {% load crispy_forms_tags %}
-<div class = "row justify-content-center" style="padding-top: 5%; padding-bottom: 5%;">
+<div class = "row justify-content-center">
     <div class = "col-md-2"></div>
     <div class = "col-md-8">
         <div class = "card">
             <div class = "card-header">
                 <div class = "row pl-2 pr-2">
                     <h4>{{enqueteDet.titulo}}</h4>
+                    <div class = "ml-auto">
+                        <a href = "{% url 'perfilVisita' id=enqueteDet.dono.id %}" class = "btn btn-primary">Visitar perfil do usuario {{enqueteDet.dono}}</a>
+                    </div>
                 </div>
             </div>
             <div class="card-body">
                 <h5 class = "card-title">{{enqueteDet.descricao}}</h5>
+                <span class = "border-top"></span>
+                <span>Enquete enviada pelo usuario: {{enqueteDet.dono}}</span>
             </div>
             <span class = "border-top"></span>
             <div class = "form-group">

@@ -21,7 +21,7 @@
     <link rel="stylesheet" type="text/css" href = "https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
     <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <script src = "https://cdn.datatables.net/plug-ins/1.10.21/i18n/Portuguese-Brasil.json"></script>
-
+    <link rel="icon" href="{% static '/assets/media/image/logo.png' %}">
 
 </head>
 {% if background %}
@@ -39,7 +39,7 @@
                         <a class="nav-link" href="{% url 'Index' %}">Home</a>
                     </li>
                     {%if user.is_authenticated %}
-                    <li class = "nav-item"><a  class="nav-link" href = "#">Perfil</a></li>
+                    <li class = "nav-item"><a  class="nav-link" href = "{% url 'perfil' %}">Perfil</a></li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                           Enquetes
@@ -67,7 +67,7 @@
             </div>
           </nav>
     </header>
-    <div class = "container-fluid" style="margin-top: 50px;">
+    <div class = "container-fluid" style="margin-top: 50px; padding-top: 5%; padding-bottom: 5%;">
     {% block content %}
 
     {% endblock %}
@@ -79,7 +79,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class = "navbar-nav ml-auto">
                     <li class = "nav-item"><a  class="nav-link" href = "#"><i class="fab fa-git"></i></a></li>
-                    <li class = "nav-item"><a  class="nav-link" href = "https://www.linkedin.com/in/brunozar/"><i class="fab fa-linkedin-in"></i></a></li>
+                    <li class = "nav-item"><a  class="nav-link" target="_blank" href = "https://www.linkedin.com/in/brunozar/"><i class="fab fa-linkedin-in"></i></a></li>
                 </ul>
             </div>
           </nav>

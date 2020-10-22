@@ -35,12 +35,14 @@ def Index(request):
             emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
         enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
     ultimas = enquetesLista[0:20][::-1]
-    meuPer = perfil.objects.filter(usuario = request.user).last()
-    meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
-                "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
-                "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
-                "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
-                "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    meuPerfil = False
+    if str(request.user) != "AnonymousUser" and perfil.objects.filter(usuario = request.user).last()!= None:
+        meuPer = perfil.objects.filter(usuario = request.user).last()
+        meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+                    "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
+                    "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
+                    "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                    "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
     return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas,
                                             "emAlta": emAlta, "meuPerfil": meuPerfil})
 
@@ -148,3 +150,48 @@ def preencherPerfil(request):
                 "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
     return render(request, "preencherPerfil.html", {"background": "background"+str(randint(1,3))+".jpg",
                                                     "form": form, "meuPerfil": meuPerfil})
+
+
+def perfilView(request):
+    meuPer = perfil.objects.filter(usuario = request.user).last()
+    meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+                "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
+                "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
+                "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    enquetes = enquete.objects.filter(dono = request.user)
+    respostas = resposta.objects.filter(dono = request.user)
+    print(respostas[0].pergunta)
+    enquetesLista = []
+    for i in enquetes:
+        qtdRespostas = len(resposta.objects.filter(pergunta=i))
+        enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
+    return render(request, "perfil.html", {"background": "background"+str(randint(1,3))+".jpg",
+                                           "meuPerfil": meuPerfil, "enquetes": enquetesLista, 
+                                           "respostas": respostas })
+                                        
+def perfilVisita(request, id):
+    if User.objects.get(id = id) == request.user:
+        return redirect("perfil")
+    meuPer = perfil.objects.filter(usuario = User.objects.get(id = id)).last()    
+    if meuPer != None:
+        meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+                    "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
+                    "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
+                    "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                    "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    else:
+        meuPerfil = {"usuario": User.objects.get(id = id), "nomeCompleto": "", "email": "", "foto": "", 
+                    "nascimento": "", "mostrarNome": False, "mostrarEmail": False, 
+                    "mostrarFoto": False, "mostrarNascimento": False, 
+                    "qtdEnquetes": len(enquete.objects.filter(dono = User.objects.get(id = id))), 
+                    "qtdRespostas": len(resposta.objects.filter(dono = User.objects.get(id = id))),}
+    enquetes = enquete.objects.filter(dono = User.objects.get(id = id))
+    respostas = resposta.objects.filter(dono = User.objects.get(id = id))
+    enquetesLista = []
+    for i in enquetes:
+        qtdRespostas = len(resposta.objects.filter(pergunta=i))
+        enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
+    return render(request, "perfil.html", {"background": "background"+str(randint(1,3))+".jpg",
+                                           "meuPerfil": meuPerfil, "enquetes": enquetesLista, 
+                                           "respostas": respostas, "visita": True })

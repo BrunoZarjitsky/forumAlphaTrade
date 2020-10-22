@@ -43,8 +43,10 @@ def EnqueteDetalhe(request, id):
     enqueteDet = enquete.objects.get(id = id)
     pergunta = enquete.objects.get(id=id)
     respostas = resposta.objects.filter(pergunta=pergunta).order_by("-id")
-    principal = {"resp": respostas[0].resp, "dono": respostas[0].dono, "id": respostas[0].id, "likes": 0}
-    principalPlacehold = 0
+    principal = 0
+    if len(respostas) != 0 :
+        principal = {"resp": respostas[0].resp, "dono": respostas[0].dono, "id": respostas[0].id, "likes": 0}
+        principalPlacehold = 0
     respostasLikes = []
     for i in respostas:
         qtd = len(avaliacaoResp.objects.filter(resp=i))
@@ -52,7 +54,8 @@ def EnqueteDetalhe(request, id):
             principal = {"resp": i.resp, "dono": i.dono, "id": i.id, "likes": qtd}
             principalPlacehold = qtd
         respostasLikes.append({"resp": i.resp, "dono": i.dono, "id": i.id, "likes": qtd})
-    respostasLikes.remove(principal)
+    if principal in respostasLikes:
+        respostasLikes.remove(principal)
     if request.method == "POST":
         if "aval" in request.POST:
             # print(resposta.objects.get(id=request.POST["aval"]).dono == request.user)

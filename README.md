@@ -14,3 +14,12 @@ O objetivo da aplicação é gerenciar enquetes de usuários e permitir interaç
   <li>Tela de Criar Enquete</li>
   <li>Tela de Responder Enquete (lista todas as enquetes criadas para que o usuário possa respondê-las)</li>
 </ul>
+<br>
+
+<h1>Para rodar o projeto você vai precisar de:</h1>
+<ul>
+  <li>python3</li>
+  <li>Django</li>
+  <li>bootstrao4</li>
+  <li>django-crispy-forms (pip install django-crispy-forms)</li>
+</ul>

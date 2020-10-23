@@ -37,7 +37,12 @@
                     <div class = "card">
                         <div class = "card-header">
                             <h3 class = "card-title">Principal resposta</h3>
-                            Resposta Enviada por: <span class = "font-weight-bold">{{principal.dono}}</span>
+                            <div class = "row pl-2 pr-2">
+                                Resposta Enviada por: <span class = "font-weight-bold">{{principal.dono}}</span>
+                                <div class = "ml-auto">
+                                    <a href = "{% url 'perfilVisita' id=principal.dono.id %}" class = "btn btn-primary">Visitar perfil do usuario {{principal.dono}}</a>
+                                </div>
+                            </div>
                         </div>
                         <div class = "card-body">
                             <div class = "row">
@@ -60,7 +65,12 @@
                 <div class = "col-md-12">
                     <div class = "card">
                         <div class = "card-header">
+                            <div class = "row pl-2 pr-2">
                             Resposta Enviada por: <span class = "font-weight-bold">{{autos.dono}}</span>
+                                <div class = "ml-auto">
+                                    <a href = "{% url 'perfilVisita' id=autos.dono.id %}" class = "btn btn-primary">Visitar perfil do usuario {{autos.dono}}</a>
+                                </div>
+                            </div>
                         </div>
                         <div class = "card-body">
                             <div class = "row">

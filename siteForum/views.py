@@ -12,37 +12,41 @@ from .forms import *
 
 def Index(request):
     enquetes = enquete.objects.all()
-    # print(enquetes[0].tipo.all())
     enquetesLista = []
-    emAlta = [{"enquete": enquetes[0], "qtdRespostas": 0}, {"enquete": enquetes[1], "qtdRespostas": 0}, {"enquete": enquetes[2], "qtdRespostas": 0}]
-    emAltaPlacehold = [0, 0, 0]
-    for i in enquetes:
-        qtdRespostas = len(resposta.objects.filter(pergunta=i))
-        if qtdRespostas >= emAltaPlacehold[0]:
-            emAltaPlacehold[0] = qtdRespostas
-            emAlta[2] = emAlta[1]
-            emAlta[1] = emAlta[0]
-            emAltaPlacehold[1] = emAlta[1]["qtdRespostas"]
-            emAltaPlacehold[2] = emAlta[2]["qtdRespostas"]
-            emAlta[0] = {"enquete": i, "qtdRespostas": qtdRespostas}
-        elif qtdRespostas >= emAltaPlacehold[1]:
-            emAltaPlacehold[1] = qtdRespostas
-            emAlta[2] = emAlta[1]
-            emAltaPlacehold[2] = emAlta[2]["qtdRespostas"]
-            emAlta[1] = {"enquete": i, "qtdRespostas": qtdRespostas}
-        elif qtdRespostas >= emAltaPlacehold[2]:
-            emAltaPlacehold[2] = qtdRespostas
-            emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
-        enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
-    ultimas = enquetesLista[0:20][::-1]
-    meuPerfil = False
-    if str(request.user) != "AnonymousUser" and perfil.objects.filter(usuario = request.user).last()!= None:
-        meuPer = perfil.objects.filter(usuario = request.user).last()
-        meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
-                    "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
-                    "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
-                    "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
-                    "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    if len(enquetes) != 0:
+        emAlta = [{"enquete": enquetes[0], "qtdRespostas": 0}, {"enquete": enquetes[0], "qtdRespostas": 0}, {"enquete": enquetes[0], "qtdRespostas": 0}]
+        emAltaPlacehold = [0, 0, 0]
+        for i in enquetes:
+            qtdRespostas = len(resposta.objects.filter(pergunta=i))
+            if qtdRespostas >= emAltaPlacehold[0]:
+                emAltaPlacehold[0] = qtdRespostas
+                emAlta[2] = emAlta[1]
+                emAlta[1] = emAlta[0]
+                emAltaPlacehold[1] = emAlta[1]["qtdRespostas"]
+                emAltaPlacehold[2] = emAlta[2]["qtdRespostas"]
+                emAlta[0] = {"enquete": i, "qtdRespostas": qtdRespostas}
+            elif qtdRespostas >= emAltaPlacehold[1]:
+                emAltaPlacehold[1] = qtdRespostas
+                emAlta[2] = emAlta[1]
+                emAltaPlacehold[2] = emAlta[2]["qtdRespostas"]
+                emAlta[1] = {"enquete": i, "qtdRespostas": qtdRespostas}
+            elif qtdRespostas >= emAltaPlacehold[2]:
+                emAltaPlacehold[2] = qtdRespostas
+                emAlta[2] = {"enquete": i, "qtdRespostas": qtdRespostas}
+            enquetesLista.append({"enquete": i, "qtdRespostas": qtdRespostas})
+        ultimas = enquetesLista[0:20][::-1]
+        meuPerfil = False
+        if str(request.user) != "AnonymousUser" and perfil.objects.filter(usuario = request.user).last()!= None:
+            meuPer = perfil.objects.filter(usuario = request.user).last()
+            meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+                        "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
+                        "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
+                        "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                        "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    else:
+        ultimas = {}
+        emAlta = {}
+        meuPerfil = {}
     return render(request, "index.html", {"background": "background"+str(randint(1,3))+".jpg", "ultimas": ultimas,
                                             "emAlta": emAlta, "meuPerfil": meuPerfil})
 
@@ -76,13 +80,11 @@ def EnqueteDetalhe(request, id):
         respostasLikes.remove(principal)
     if request.method == "POST":
         if "aval" in request.POST:
-            # print(resposta.objects.get(id=request.POST["aval"]).dono == request.user)
             form2 = avalPos(resp=resposta.objects.get(id=request.POST["aval"]), data=request.POST, dono=request.user)
             donos = []
             for i in avaliacaoResp.objects.filter(resp = resposta.objects.get(id=request.POST["aval"])):
                 donos.append(str(i.dono))
             if ((str(request.user) not in donos) and (str(request.user) != "AnonymousUser") and (form2.is_valid())):
-                print("aaaaaaaaaaaaaaaaaaaaa")
                 form2.save()
                 return redirect("EnqueteDetalhe", id)
             else:
@@ -164,14 +166,20 @@ def preencherPerfil(request):
 @login_required
 def perfilView(request):
     meuPer = perfil.objects.filter(usuario = request.user).last()
-    meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
+    if meuPer != None:
+        meuPerfil = {"usuario": meuPer.usuario, "nomeCompleto": meuPer.nomeCompleto, "email": meuPer.email, "foto": meuPer.foto, 
                 "nascimento": meuPer.nascimento, "mostrarNome": meuPer.mostrarNome, "mostrarEmail": meuPer.mostrarEmail, 
                 "mostrarFoto": meuPer.mostrarFoto, "mostrarNascimento": meuPer.mostrarNascimento, 
                 "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
                 "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
+    else:
+        meuPerfil = {"usuario": request.user, "nomeCompleto": "", "email": "", "foto": "", 
+                    "nascimento": "", "mostrarNome": False, "mostrarEmail": False, 
+                    "mostrarFoto": False, "mostrarNascimento": False, 
+                    "qtdEnquetes": len(enquete.objects.filter(dono = request.user)), 
+                    "qtdRespostas": len(resposta.objects.filter(dono = request.user)),}
     enquetes = enquete.objects.filter(dono = request.user)
     respostas = resposta.objects.filter(dono = request.user)
-    print(respostas[0].pergunta)
     enquetesLista = []
     for i in enquetes:
         qtdRespostas = len(resposta.objects.filter(pergunta=i))
